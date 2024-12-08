@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const connectToDatabase = require("./config/dbcon");
+const mediaRoute = require("./gdriveroute");
 const textRoutes = require("./routes");
 const cors = require("cors");
 
@@ -12,6 +13,7 @@ app.use(cors());
 connectToDatabase();
 
 app.use("/api", textRoutes);
+app.use("/api", mediaRoute);
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
