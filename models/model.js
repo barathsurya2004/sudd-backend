@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 
 const mediaSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true, 
+  },
   text: {
     type: String,
-    required: false,
+    required: false, 
   },
   imageId: {
     type: String,
-    required: true,
+    required: true, 
   },
 });
 

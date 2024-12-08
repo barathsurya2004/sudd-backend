@@ -17,6 +17,10 @@ const textSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  text5:{
+    type:String,
+    required: false,
+  }
 });
 
 const Text = mongoose.model("Text", textSchema);
