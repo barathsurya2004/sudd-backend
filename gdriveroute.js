@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const router = express.Router();
 
-router.post("/upload", upload.single("image"), async (req, res) => {
+router.post("/temp", upload.single("image"), async (req, res) => {
     try {
       const { title, text } = req.body; 
       const imageFile = req.file;
