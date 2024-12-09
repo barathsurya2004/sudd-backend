@@ -6,7 +6,7 @@ const Image = require("./models/imagemodel");
 
 const router = express.Router();
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "temp/" });
 
 router.post("/upload-image", upload.single("image"), async (req, res) => {
   try {
