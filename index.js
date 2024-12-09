@@ -10,7 +10,9 @@ const app = express();
 const port = 8003;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "*",
+}));
 connectToDatabase();
 
 app.use("/api", textRoutes);
