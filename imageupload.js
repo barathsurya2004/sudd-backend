@@ -79,9 +79,7 @@ router.get("/get-all-images", async (req, res) => {
     }
 
     res.status(200).json({
-      images: images.map((image) => ({
-        imageId: image.imageId,
-      })),
+      imageid:images[0].imageId 
     });
   } catch (error) {
     console.error("Error retrieving all images:", error);

@@ -94,6 +94,7 @@ router.get('/get-by-title/:title', async (req, res) => {
         }
 
         res.status(200).json({
+            id : media._id,
             imageId: media.imageId,
             //link :
             text: media.text || null, 

@@ -159,6 +159,20 @@ router.post("/save-texts", async (req, res) => {
 });
 
 // <<-------------------- GET routes ahead ---------------->>
+router.get("/get-all-texts/:id", async (req, res) => {
+  try {
+    const texts = await Text.findById(req.params.id);
+
+    if (texts.length === 0) {
+      return res.status(404).json({ message: "No texts found!" });
+    }
+
+    res.status(200).json({ texts });
+  } catch (error) {
+    console.error("Error fetching texts:", error);
+    res.status(500).json({ message: "Error fetching texts", error });
+  }
+})
 router.get("/get-text1/:id", async (req, res) => {
   try {
     const document = await Text.findById(req.params.id);
