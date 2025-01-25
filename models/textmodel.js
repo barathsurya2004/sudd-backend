@@ -25,6 +25,13 @@ const textSchema = new mongoose.Schema({
   text8: { type: String, required: false },
   primary8: { type: String, required: false }, // Primary color for text8
   secondary8: { type: String, required: false }, // Secondary color for text8
+  text9: { type: String, required: false },
+  text10: { type: String, required: false },
+  text11: { type: String, required: false },
+  text12: { type: String, required: false },
+  text13: { type: String, required: false },
+  text14: { type: String, required: false },
+  text15: { type: String, required: false },
 });
 
 const Text = mongoose.model("Text", textSchema);

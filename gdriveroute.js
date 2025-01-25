@@ -1,43 +1,90 @@
 const express = require("express");
 const upload = require("./config/multer");
 const uploadFileToDrive = require("./config/drive");
-const Media = require("./models/model");
+// const Media = require("./models/model");
+const Media = require("./models/projectmode");
 const fs = require("fs");
 
 const router = express.Router();
 
-router.post("/upload", upload.single("image"), async (req, res) => {
+// router.post("/upload", upload.single("image"), async (req, res) => {
+//   try {
+//     const { title, text } = req.body;
+//     const imageFile = req.file;
+
+//     if (!title) {
+//       return res.status(400).json({ message: "Title is required" });
+//     }
+
+//     if (!imageFile) {
+//       return res.status(400).json({ message: "Image is required" });
+//     }
+
+//     const fileId = await uploadFileToDrive(imageFile.path, imageFile.filename);
+
+//     const newMedia = new Media({
+//       title,
+//       text: text || null,
+//       imageId: fileId,
+//     });
+
+//     await newMedia.save();
+
+//     fs.unlinkSync(imageFile.path);
+
+//     res.status(201).json({
+//       message: "Image, title, and text uploaded successfully",
+//       data: newMedia,
+//     });
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//     res.status(500).json({ message: "Error uploading file", error });
+//   }
+// });
+
+router.post("/upload", upload.array("images"), async (req, res) => {
   try {
-    const { title, text } = req.body;
-    const imageFile = req.file;
+    const { id, title, projects } = req.body;
 
-    if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+    if (!id || !title || !projects) {
+      return res
+        .status(400)
+        .json({ message: "id, title, and projects are required" });
     }
 
-    if (!imageFile) {
-      return res.status(400).json({ message: "Image is required" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "Images are required" });
     }
 
-    const fileId = await uploadFileToDrive(imageFile.path, imageFile.filename);
+    const projectArray = await Promise.all(
+      req.files.map(async (file, index) => {
+        const fileId = await uploadFileToDrive(file.path, file.filename);
+        fs.unlinkSync(file.path);
 
+        return {
+          image: fileId,
+          text: projects[index].text || null, // Use the corresponding text from the request
+        };
+      })
+    );
+
+    // Create a new media document
     const newMedia = new Media({
+      id,
       title,
-      text: text || null,
-      imageId: fileId,
+      project: projectArray,
     });
 
+    // Save the document to the database
     await newMedia.save();
 
-    fs.unlinkSync(imageFile.path);
-
     res.status(201).json({
-      message: "Image, title, and text uploaded successfully",
+      message: "Media uploaded successfully!",
       data: newMedia,
     });
   } catch (error) {
-    console.error("Error uploading file:", error);
-    res.status(500).json({ message: "Error uploading file", error });
+    console.error("Error uploading media:", error);
+    res.status(500).json({ message: "Error uploading media", error });
   }
 });
 
@@ -51,8 +98,8 @@ router.get("/get-all-media", async (req, res) => {
 
     res.status(200).json({
       media: mediaRecords.map((record) => ({
-        imageId: record.imageId,
-        text: record.text || null,
+        title: record.title,
+        projects: record.project,
       })),
     });
   } catch (error) {

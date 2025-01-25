@@ -345,7 +345,87 @@ router.get("/get-text8/:id", async (req, res) => {
   }
 });
 
+router.get("/get-all-texts/:id", async (req, res) => {
+  try {
+    const document = await Text.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ message: "Document not found!" });
+    }
 
+    res.status(200).json({
+      texts: {
+        text1: document.text1,
+        text2: document.text2,
+        text3: document.text3,
+        text4: document.text4,
+        text5: document.text5,
+        text6: document.text6,
+        text7: document.text7,
+        text8: document.text8,
+        text9: document.text9,
+        text10: document.text10,
+        text11: document.text11,
+        text12: document.text12,
+        text13: document.text13,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching all texts:", error);
+    res.status(500).json({ message: "Error fetching all texts", error });
+  }
+});
+router.get("/get-all-primary-colors/:id", async (req, res) => {
+  try {
+    const document = await Text.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ message: "Document not found!" });
+    }
+
+   
+    const primaryColors = {
+      primary1: document.primary1,
+      primary2: document.primary2,
+      primary3: document.primary3,
+      primary4: document.primary4,
+      primary5: document.primary5,
+      primary6: document.primary6,
+      primary7: document.primary7,
+      primary8: document.primary8,
+    };
+
+    res.status(200).json({ primaryColors });
+  } catch (error) {
+    console.error("Error fetching primary colors:", error);
+    res.status(500).json({ message: "Error fetching primary colors", error });
+  }
+});
+router.get("/get-all-secondary-colors/:id", async (req, res) => {
+  try {
+    const document = await Text.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ message: "Document not found!" });
+    }
+
+    // Extract all secondary colors
+    const secondaryColors = {
+      secondary1: document.secondary1,
+      secondary2: document.secondary2,
+      secondary3: document.secondary3,
+      secondary4: document.secondary4,
+      secondary5: document.secondary5,
+      secondary6: document.secondary6,
+      secondary7: document.secondary7,
+      secondary8: document.secondary8,
+      secondary9: document.secondary9,
+      secondary10: document.secondary10,
+    };
+
+    res.status(200).json({ secondaryColors });
+  } catch (error) {
+    console.error("Error fetching secondary colors:", error);
+    res.status(500).json({ message: "Error fetching secondary colors", error });
+  }
+});
 router.put("/update-text1/:id", async (req, res) => {
   try {
     const { text1, primary1, secondary1 } = req.body;
