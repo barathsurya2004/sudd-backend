@@ -374,7 +374,7 @@ router.get("/get-all-texts/:id", async (req, res) => {
     res.status(500).json({ message: "Error fetching all texts", error });
   }
 });
-router.get("/get-all-primary-colors/:id", async (req, res) => {
+router.get("/get-all-colors/:id", async (req, res) => {
   try {
     const document = await Text.findById(req.params.id);
     if (!document) {
@@ -382,18 +382,26 @@ router.get("/get-all-primary-colors/:id", async (req, res) => {
     }
 
    
-    const primaryColors = {
+    const colors = {
       primary1: document.primary1,
+      secondary1: document.secondary1,
       primary2: document.primary2,
+      secondary2: document.secondary2,
       primary3: document.primary3,
+      secondary3: document.secondary,
       primary4: document.primary4,
+      secondary4: document.secondary4,
       primary5: document.primary5,
+      secondary5: document.secondary5,
       primary6: document.primary6,
+      secondary6: document.secondary6,
       primary7: document.primary7,
+      secondary7: document.secondary7,
       primary8: document.primary8,
+      secondary8: document.secondary8,
     };
 
-    res.status(200).json({ primaryColors });
+    res.status(200).json({ colors });
   } catch (error) {
     console.error("Error fetching primary colors:", error);
     res.status(500).json({ message: "Error fetching primary colors", error });
